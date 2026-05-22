@@ -203,19 +203,11 @@
           informação cada ângulo captura.
         </p>
         <p class="step__body">
-          Clique em <em>"Encontrar o PC1"</em> e observe os eixos girarem até achar 
-          a posição onde os pontos ficam mais espalhados. Esse eixo mágico é o 
-          <strong>Componente Principal 1 (PC1)</strong>.
-        </p>
-        <p class="step__body">
-          Mas um eixo só não basta! O segundo melhor ângulo, sempre formando 90° (um ❌) com o primeiro, é o <strong>Componente Principal 2 (PC2)</strong>. Juntos, eles formam a melhor 'tela 2D' possível para nossos dados.
+          Clique em <em>"Encontrar Autovetores"</em> para ver o algoritmo testar vários pares de eixos e, finalmente, destacar o par perfeito que mais espalha os dados. O melhor eixo é o <strong>Componente Principal 1 (PC1)</strong>, e seu parceiro (sempre a 90°) é o <strong>Componente Principal 2 (PC2)</strong>. Juntos, eles formam a melhor 'tela 2D' para os dados.
         </p>
         <div style="display: flex; gap: var(--space-sm); margin-top: var(--space-lg);">
-          <button class="step__action" id="btn-eigen" type="button" style="margin-top: 0;">
-            📐 Encontrar o PC1
-          </button>
-          <button class="step__action" id="btn-eigen2" type="button" disabled style="margin-top: 0;">
-            ➕ Encontrar o PC2
+          <button class="step__action" id="btn-eigen-all" type="button" style="margin-top: 0;">
+            📐 Encontrar Autovetores
           </button>
         </div>
 

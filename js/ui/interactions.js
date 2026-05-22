@@ -73,72 +73,39 @@ function setupStep2Buttons() {
   });
 }
 
-/**
- * Configura o botão "Encontrar o melhor ângulo" do Passo 4.
- */
 function setupStep4Buttons() {
-  const btnEigen = document.getElementById('btn-eigen');
-  const btnEigen2 = document.getElementById('btn-eigen2');
-  if (!btnEigen) return;
+  const btnEigenAll = document.getElementById('btn-eigen-all');
+  if (!btnEigenAll) return;
 
-  btnEigen.addEventListener('click', () => {
+  btnEigenAll.addEventListener('click', () => {
     const step4State = store.getState('step4');
     if (step4State && step4State.hasFoundEigenvectors) return;
 
-    eventBus.emit('EIGENVECTORS_CLICKED');
+    eventBus.emit('EIGENVECTORS_ALL_CLICKED');
 
     store.setState('step4', {
       ...store.getState('step4'),
       hasFoundEigenvectors: true,
+      hasFoundPC2: true,
     });
 
-    btnEigen.textContent = '✅ PC1 Encontrado!';
-    btnEigen.classList.add('is-done');
-    btnEigen.disabled = true;
+    btnEigenAll.textContent = '✅ Autovetores Encontrados!';
+    btnEigenAll.classList.add('is-done');
+    btnEigenAll.disabled = true;
 
-    // Mostra o container principal e o card do PC1
+    // Mostra o container principal e os dois cards
     const container = document.getElementById('pc-loadings');
     const pc1Card = document.getElementById('pc1-loadings');
+    const pc2Card = document.getElementById('pc2-loadings');
     if (container) container.style.display = 'flex';
     if (pc1Card) pc1Card.style.display = 'block';
-
-    if (btnEigen2) {
-      btnEigen2.disabled = false; // Habilita o botão do PC2
-    }
+    if (pc2Card) pc2Card.style.display = 'block';
   });
 
-  if (btnEigen2) {
-    btnEigen2.addEventListener('click', () => {
-      const step4State = store.getState('step4');
-      if (step4State && step4State.hasFoundPC2) return;
-
-      eventBus.emit('EIGENVECTORS2_CLICKED');
-
-      store.setState('step4', {
-        ...store.getState('step4'),
-        hasFoundPC2: true,
-      });
-
-      btnEigen2.textContent = '✅ PC2 Encontrado!';
-      btnEigen2.classList.add('is-done');
-      btnEigen2.disabled = true;
-
-      // Mostra o card do PC2
-      const pc2Card = document.getElementById('pc2-loadings');
-      if (pc2Card) pc2Card.style.display = 'block';
-    });
-  }
-
   eventBus.on('STATE_RESET', () => {
-    btnEigen.textContent = '📐 Encontrar o PC1';
-    btnEigen.classList.remove('is-done');
-    btnEigen.disabled = false;
-
-    if (btnEigen2) {
-      btnEigen2.textContent = '➕ Encontrar o PC2';
-      btnEigen2.classList.remove('is-done');
-      btnEigen2.disabled = true;
-    }
+    btnEigenAll.textContent = '📐 Encontrar Autovetores';
+    btnEigenAll.classList.remove('is-done');
+    btnEigenAll.disabled = false;
 
     const container = document.getElementById('pc-loadings');
     const pc1Card = document.getElementById('pc1-loadings');

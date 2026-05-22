@@ -242,9 +242,15 @@ export function calculatePrincipalComponents() {
       slope: -1 / 0.7, // Ortogonal (90 graus)
       angle: 125,
     },
+    pc3: { slope: 0.2, angle: 11 },
+    pc4: { slope: -2.5, angle: -68 },
+    pc5: { slope: 0.05, angle: 3 },
     variances: {
       pc1: 75, // 75% da informação original
       pc2: 18,
+      pc3: 4,
+      pc4: 2,
+      pc5: 1,
     },
   };
 }
