@@ -103,7 +103,6 @@
               <tr><td>#1</td><td>45</td><td>42 min</td><td>R$ 3.200</td><td>22</td><td>1</td></tr>
               <tr><td>#11</td><td>22</td><td>8 min</td><td>R$ 120</td><td>2</td><td>1</td></tr>
               <tr><td>#21</td><td>35</td><td>10 min</td><td>R$ 800</td><td>5</td><td>14</td></tr>
-              <tr><td colspan="6" style="text-align: center; color: var(--text-muted);">... mais 27 clientes ...</td></tr>
             </tbody>
           </table>
         </div>
@@ -186,6 +185,27 @@
             ➕ Encontrar o PC2
           </button>
         </div>
+
+        <!-- CONTAINER DE PESOS DOS PCs (LOADINGS) -->
+        <div id="pc-loadings" class="pc-loadings-container" style="display: none; margin-top: var(--space-lg);">
+          <div class="pc-loading-card" id="pc1-loadings" style="display: none;">
+            <h4>Composição do PC1 <span class="badge">Sugestão: "Engajamento"</span></h4>
+            <div class="bar-row"><span class="bar-label">Frequência (+49%)</span><div class="bar-track"><div class="bar-fill pos" style="width: 49%"></div></div></div>
+            <div class="bar-row"><span class="bar-label">Ticket (+48%)</span><div class="bar-track"><div class="bar-fill pos" style="width: 48%"></div></div></div>
+            <div class="bar-row"><span class="bar-label">Tempo (+47%)</span><div class="bar-track"><div class="bar-fill pos" style="width: 47%"></div></div></div>
+            <div class="bar-row"><span class="bar-label">Idade (+45%)</span><div class="bar-track"><div class="bar-fill pos" style="width: 45%"></div></div></div>
+            <div class="bar-row"><span class="bar-label">Suporte (-33%)</span><div class="bar-track"><div class="bar-fill neg" style="width: 33%"></div></div></div>
+          </div>
+
+          <div class="pc-loading-card" id="pc2-loadings" style="display: none;">
+            <h4>Composição do PC2 <span class="badge">Sugestão: "Risco de Churn"</span></h4>
+            <div class="bar-row"><span class="bar-label">Suporte (+93%)</span><div class="bar-track"><div class="bar-fill pos" style="width: 93%"></div></div></div>
+            <div class="bar-row"><span class="bar-label">Idade (+15%)</span><div class="bar-track"><div class="bar-fill pos" style="width: 15%"></div></div></div>
+            <div class="bar-row"><span class="bar-label">Ticket (-10%)</span><div class="bar-track"><div class="bar-fill neg" style="width: 10%"></div></div></div>
+            <div class="bar-row"><span class="bar-label">Frequência (-18%)</span><div class="bar-track"><div class="bar-fill neg" style="width: 18%"></div></div></div>
+            <div class="bar-row"><span class="bar-label">Tempo (-22%)</span><div class="bar-track"><div class="bar-fill neg" style="width: 22%"></div></div></div>
+          </div>
+        </div>
       </section>
 
       <!-- PASSO 5: A Mágica — Projeção Final -->
@@ -211,15 +231,14 @@
             <thead>
               <tr>
                 <th>ID</th>
-                <th>PC1 (Nova Dimensão 1)</th>
-                <th>PC2 (Nova Dimensão 2)</th>
+                <th>PC1 (Engajamento)</th>
+                <th>PC2 (Risco de Churn)</th>
               </tr>
             </thead>
             <tbody>
               <tr><td>#1</td><td>2.80</td><td>-0.50</td></tr>
               <tr><td>#11</td><td>-2.40</td><td>-0.60</td></tr>
               <tr><td>#21</td><td>-0.20</td><td>1.50</td></tr>
-              <tr><td colspan="3" style="text-align: center; color: var(--text-muted);">... mais 27 clientes ...</td></tr>
             </tbody>
           </table>
         </div>

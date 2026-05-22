@@ -362,12 +362,13 @@ code, pre {
   font-family: var(--font-mono);
   font-size: var(--fs-sm);
   text-align: left;
+  border: 1px solid hsla(220, 20%, 30%, 0.3);
 }
 
 .data-table th,
 .data-table td {
   padding: var(--space-sm) var(--space-md);
-  border-bottom: 1px solid hsla(220, 20%, 30%, 0.2);
+  border: 1px solid hsla(220, 20%, 30%, 0.3);
 }
 
 .data-table th {
@@ -380,12 +381,78 @@ code, pre {
   letter-spacing: 0.05em;
 }
 
-.data-table tr:last-child td {
-  border-bottom: none;
-}
-
 .data-table tbody tr:hover {
   background: var(--bg-tertiary);
+}
+
+/* Gráficos de Barras para Loadings do PCA */
+.pc-loadings-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.pc-loading-card {
+  background: var(--bg-secondary);
+  border: 1px solid hsla(220, 20%, 30%, 0.3);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  animation: slideUp var(--duration-normal) var(--ease-out) forwards;
+}
+
+.pc-loading-card h4 {
+  font-size: var(--fs-base);
+  margin-bottom: var(--space-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pc-loading-card .badge {
+  font-size: 0.65rem;
+  background: var(--accent-secondary);
+  color: var(--bg-primary);
+  padding: 4px 8px;
+  border-radius: var(--radius-full);
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+}
+
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: 6px;
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
+.bar-label {
+  flex: 0 0 130px;
+  text-align: right;
+}
+
+.bar-track {
+  flex: 1;
+  height: 8px;
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1s ease-out;
+}
+
+.bar-fill.pos {
+  background: var(--accent-success);
+}
+
+.bar-fill.neg {
+  background: var(--accent-danger);
 }
 
 /* Botão de ação dentro dos steps (ex: "Padronizar Dados") */

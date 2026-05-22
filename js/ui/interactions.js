@@ -96,6 +96,12 @@ function setupStep4Buttons() {
     btnEigen.classList.add('is-done');
     btnEigen.disabled = true;
 
+    // Mostra o container principal e o card do PC1
+    const container = document.getElementById('pc-loadings');
+    const pc1Card = document.getElementById('pc1-loadings');
+    if (container) container.style.display = 'flex';
+    if (pc1Card) pc1Card.style.display = 'block';
+
     if (btnEigen2) {
       btnEigen2.disabled = false; // Habilita o botão do PC2
     }
@@ -116,6 +122,10 @@ function setupStep4Buttons() {
       btnEigen2.textContent = '✅ PC2 Encontrado!';
       btnEigen2.classList.add('is-done');
       btnEigen2.disabled = true;
+
+      // Mostra o card do PC2
+      const pc2Card = document.getElementById('pc2-loadings');
+      if (pc2Card) pc2Card.style.display = 'block';
     });
   }
 
@@ -129,5 +139,12 @@ function setupStep4Buttons() {
       btnEigen2.classList.remove('is-done');
       btnEigen2.disabled = true;
     }
+
+    const container = document.getElementById('pc-loadings');
+    const pc1Card = document.getElementById('pc1-loadings');
+    const pc2Card = document.getElementById('pc2-loadings');
+    if (container) container.style.display = 'none';
+    if (pc1Card) pc1Card.style.display = 'none';
+    if (pc2Card) pc2Card.style.display = 'none';
   });
 }
