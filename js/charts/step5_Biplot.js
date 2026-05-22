@@ -100,14 +100,14 @@ export function render(containerId) {
     },
 
     xaxis: {
-      title: { text: 'Componente Principal 1 (PC1)', font: { color: '#a0aec0', size: 13 }, standoff: 10 },
+      title: { text: 'PC1 - Engajamento', font: { color: '#a0aec0', size: 13 }, standoff: 10 },
       gridcolor: 'rgba(160, 174, 192, 0.1)',
       zerolinecolor: 'rgba(160, 174, 192, 0.3)',
       tickfont: { color: '#718096', size: 11 },
     },
     
     yaxis: {
-      title: { text: 'Componente Principal 2 (PC2)', font: { color: '#a0aec0', size: 13 }, standoff: 10 },
+      title: { text: 'PC2 - Risco de Churn ', font: { color: '#a0aec0', size: 13 }, standoff: 10 },
       gridcolor: 'rgba(160, 174, 192, 0.1)',
       zerolinecolor: 'rgba(160, 174, 192, 0.3)',
       tickfont: { color: '#718096', size: 11 },
