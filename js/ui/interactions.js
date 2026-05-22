@@ -78,6 +78,7 @@ function setupStep2Buttons() {
  */
 function setupStep4Buttons() {
   const btnEigen = document.getElementById('btn-eigen');
+  const btnEigen2 = document.getElementById('btn-eigen2');
   if (!btnEigen) return;
 
   btnEigen.addEventListener('click', () => {
@@ -91,14 +92,42 @@ function setupStep4Buttons() {
       hasFoundEigenvectors: true,
     });
 
-    btnEigen.textContent = '✅ Melhor ângulo encontrado!';
+    btnEigen.textContent = '✅ PC1 Encontrado!';
     btnEigen.classList.add('is-done');
     btnEigen.disabled = true;
+
+    if (btnEigen2) {
+      btnEigen2.disabled = false; // Habilita o botão do PC2
+    }
   });
 
+  if (btnEigen2) {
+    btnEigen2.addEventListener('click', () => {
+      const step4State = store.getState('step4');
+      if (step4State && step4State.hasFoundPC2) return;
+
+      eventBus.emit('EIGENVECTORS2_CLICKED');
+
+      store.setState('step4', {
+        ...store.getState('step4'),
+        hasFoundPC2: true,
+      });
+
+      btnEigen2.textContent = '✅ PC2 Encontrado!';
+      btnEigen2.classList.add('is-done');
+      btnEigen2.disabled = true;
+    });
+  }
+
   eventBus.on('STATE_RESET', () => {
-    btnEigen.textContent = '📐 Encontrar o melhor ângulo';
+    btnEigen.textContent = '📐 Encontrar o PC1';
     btnEigen.classList.remove('is-done');
     btnEigen.disabled = false;
+
+    if (btnEigen2) {
+      btnEigen2.textContent = '➕ Encontrar o PC2';
+      btnEigen2.classList.remove('is-done');
+      btnEigen2.disabled = true;
+    }
   });
 }

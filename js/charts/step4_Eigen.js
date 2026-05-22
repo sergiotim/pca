@@ -26,6 +26,7 @@ import { eventBus } from '../core/eventBus.js';
 
 let isActive = false;
 let eigenHandler = null;
+let eigen2Handler = null;
 
 
 /**
@@ -68,12 +69,22 @@ export function render(containerId) {
     annotations: [], // Sem anotação de PC1 ainda
   });
 
+  // Linha fantasma para o PC2 (será revelada depois)
+  layout.shapes.push({
+    type: 'line',
+    x0: 0, y0: 0, x1: 0, y1: 0,
+    line: { color: 'transparent', width: 3, dash: 'dash' }
+  });
+
   const config = { responsive: true, displayModeBar: false };
   Plotly.newPlot(containerId, [trace], layout, config);
 
   // ── Listener para o botão de encontrar o ângulo ──
   eigenHandler = () => animateEigenvector(containerId);
   eventBus.on('EIGENVECTORS_CLICKED', eigenHandler);
+  
+  eigen2Handler = () => animatePC2(containerId);
+  eventBus.on('EIGENVECTORS2_CLICKED', eigen2Handler);
 }
 
 
@@ -117,6 +128,84 @@ function animateEigenvector(containerId) {
         },
       ],
     }),
+  }, {
+    transition: { duration: 1500, easing: 'cubic-in-out' },
+    frame: { duration: 1500, redraw: false },
+  }).then(() => {
+    // Preserva a linha fantasma do PC2 no layout construído
+    const currentLayout = document.getElementById(containerId).layout;
+    if (currentLayout.shapes.length < 2) {
+      Plotly.relayout(containerId, {
+        shapes: [
+          currentLayout.shapes[0],
+          { type: 'line', x0: 0, y0: 0, x1: 0, y1: 0, line: { color: 'transparent', width: 3, dash: 'dash' } }
+        ]
+      });
+    }
+  });
+}
+
+/**
+ * Anima a criação do eixo PC2 (ortogonal ao PC1).
+ */
+function animatePC2(containerId) {
+  if (!isActive) return;
+
+  const pca = calculatePrincipalComponents();
+  const slope1 = pca.pc1.slope;
+  const slope2 = pca.pc2.slope;
+  const variance1 = pca.variances.pc1;
+  const variance2 = pca.variances.pc2;
+
+  const pc2_x0 = -2.8;
+  const pc2_y0 = pc2_x0 * slope2;
+  const pc2_x1 = 2.8;
+  const pc2_y1 = pc2_x1 * slope2;
+
+  const y0_final = -4 * slope1;
+  const y1_final = 4 * slope1;
+
+  Plotly.animate(containerId, {
+    layout: {
+      title: {
+        text: `✅ PC1 e PC2 encontrados!<br><sub style="font-size:11px; color:#718096;">Formam um ângulo de 90° e explicam ${variance1 + variance2}% da informação conjunta!</sub>`,
+        font: { family: 'Inter, sans-serif', size: 16, color: '#e2e8f0' },
+        x: 0.5,
+        xanchor: 'center',
+      },
+      shapes: [
+        {
+          type: 'line',
+          x0: -4, y0: y0_final,
+          x1: 4, y1: y1_final,
+          line: { color: '#36d6b5', width: 3, dash: 'dash' },
+        },
+        {
+          type: 'line',
+          x0: pc2_x0, y0: pc2_y0,
+          x1: pc2_x1, y1: pc2_y1,
+          line: { color: '#f59e0b', width: 3, dash: 'dash' },
+        }
+      ],
+      annotations: [
+        {
+          x: 3.5, y: 3.5 * slope1 + 0.3,
+          text: 'PC1',
+          showarrow: false,
+          font: { color: '#36d6b5', size: 13, weight: 'bold' },
+          bgcolor: 'rgba(20, 25, 40, 0.8)',
+          bordercolor: '#36d6b5', borderwidth: 1, borderpad: 4,
+        },
+        {
+          x: pc2_x1, y: pc2_y1 + 0.4,
+          text: 'PC2',
+          showarrow: false,
+          font: { color: '#f59e0b', size: 13, weight: 'bold' },
+          bgcolor: 'rgba(20, 25, 40, 0.8)',
+          bordercolor: '#f59e0b', borderwidth: 1, borderpad: 4,
+        }
+      ]
+    }
   }, {
     transition: { duration: 1500, easing: 'cubic-in-out' },
     frame: { duration: 1500, redraw: false },
@@ -181,6 +270,10 @@ export function destroy(containerId) {
   if (eigenHandler) {
     eventBus.off('EIGENVECTORS_CLICKED', eigenHandler);
     eigenHandler = null;
+  }
+  if (eigen2Handler) {
+    eventBus.off('EIGENVECTORS2_CLICKED', eigen2Handler);
+    eigen2Handler = null;
   }
   Plotly.purge(containerId);
 }

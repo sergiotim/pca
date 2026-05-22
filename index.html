@@ -65,15 +65,16 @@
 
 
   <!-- ====================================================
-       SCROLLYTELLING — Corpo principal da experiência
+       SLIDES — Corpo principal da experiência
        Layout Side-by-Side:
-         • <article> (esquerda): seções de texto que rolam
-         • <figure> (direita): gráfico travado em sticky
+         • <article> (esquerda): seções de texto que alternam
+         • <figure> (direita): gráfico travado
        ==================================================== -->
-  <main class="scrolly-container" id="scrolly">
+  <main class="slides-container" id="scrolly">
 
-    <!-- ── COLUNA ESQUERDA: Texto narrativo ── -->
-    <article class="scroll-text">
+    <!-- ── COLUNA ESQUERDA: Texto narrativo e navegação ── -->
+    <div class="slides-left-column">
+      <article class="slides-text">
 
       <!-- PASSO 1: O Caos Dimensional -->
       <section class="step" data-step="1" id="step-1">
@@ -83,11 +84,30 @@
           "Temos 5 coisas sobre cada cliente. Você consegue imaginar um objeto em 5D?"
         </p>
         <p class="step__body">
-          Aqui está a tabela dos nossos clientes. Cada linha é uma pessoa; cada coluna é uma 
-          característica: <strong>Idade</strong>, <strong>Tempo no Site</strong>, 
-          <strong>Ticket Médio</strong>, <strong>Frequência de Compra</strong> e 
-          <strong>Interações com Suporte</strong>.
+          Aqui está uma amostra da tabela dos nossos clientes. Cada linha é uma pessoa; cada coluna é uma característica:
         </p>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Idade</th>
+                <th>Tempo Site</th>
+                <th>Ticket Médio</th>
+                <th>Frequência</th>
+                <th>Suporte</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>#1</td><td>45</td><td>42 min</td><td>R$ 3.200</td><td>22</td><td>1</td></tr>
+              <tr><td>#11</td><td>22</td><td>8 min</td><td>R$ 120</td><td>2</td><td>1</td></tr>
+              <tr><td>#21</td><td>35</td><td>10 min</td><td>R$ 800</td><td>5</td><td>14</td></tr>
+              <tr><td colspan="6" style="text-align: center; color: var(--text-muted);">... mais 27 clientes ...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
         <p class="step__body">
           Nosso objetivo é encontrar padrões — mas nossos olhos só enxergam em 3D (no máximo). 
           Precisamos reduzir essas 5 dimensões para 2, como tirar uma "sombra" de um objeto 
@@ -151,13 +171,21 @@
           informação cada ângulo captura.
         </p>
         <p class="step__body">
-          Clique em <em>"Encontrar o melhor ângulo"</em> e observe os eixos girarem até achar 
+          Clique em <em>"Encontrar o PC1"</em> e observe os eixos girarem até achar 
           a posição onde os pontos ficam mais espalhados. Esse eixo mágico é o 
           <strong>Componente Principal 1 (PC1)</strong>.
         </p>
-        <button class="step__action" id="btn-eigen" type="button">
-          📐 Encontrar o melhor ângulo
-        </button>
+        <p class="step__body">
+          Mas um eixo só não basta! O segundo melhor ângulo, sempre formando 90° (um ❌) com o primeiro, é o <strong>Componente Principal 2 (PC2)</strong>. Juntos, eles formam a melhor 'tela 2D' possível para nossos dados.
+        </p>
+        <div style="display: flex; gap: var(--space-sm); margin-top: var(--space-lg);">
+          <button class="step__action" id="btn-eigen" type="button" style="margin-top: 0;">
+            📐 Encontrar o PC1
+          </button>
+          <button class="step__action" id="btn-eigen2" type="button" disabled style="margin-top: 0;">
+            ➕ Encontrar o PC2
+          </button>
+        </div>
       </section>
 
       <!-- PASSO 5: A Mágica — Projeção Final -->
@@ -177,9 +205,34 @@
           <strong>VIPs</strong>, <strong>Casuais</strong>, <strong>De Risco</strong>… 
           Tudo isso a partir de uma redução de dimensionalidade. Esse é o poder do PCA.
         </p>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>PC1 (Nova Dimensão 1)</th>
+                <th>PC2 (Nova Dimensão 2)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>#1</td><td>2.80</td><td>-0.50</td></tr>
+              <tr><td>#11</td><td>-2.40</td><td>-0.60</td></tr>
+              <tr><td>#21</td><td>-0.20</td><td>1.50</td></tr>
+              <tr><td colspan="3" style="text-align: center; color: var(--text-muted);">... mais 27 clientes ...</td></tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
     </article>
+
+    <!-- ── NAVEGAÇÃO DE PASSOS ── -->
+    <div class="step-navigation">
+      <button class="nav-btn" id="btn-prev" disabled>← Passo Anterior</button>
+      <button class="nav-btn" id="btn-next">Próximo Passo →</button>
+    </div>
+    </div> <!-- Fim da slides-left-column -->
 
     <!-- ── COLUNA DIREITA: Gráfico fixo (sticky) ── -->
     <figure class="sticky-graphic" id="sticky-graphic">

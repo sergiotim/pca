@@ -183,32 +183,39 @@ code, pre {
 
 
 /* ----------------------------------------------------------
-   4. LAYOUT DO SCROLLYTELLING (SIDE-BY-SIDE)
-   Modelo: texto rola na esquerda, gráfico fixo na direita.
+   4. LAYOUT DOS SLIDES (SIDE-BY-SIDE)
+   Modelo: texto na esquerda, gráfico na direita.
    Usa CSS Grid para distribuição das colunas.
    ---------------------------------------------------------- */
 
-.scrolly-container {
+.slides-container {
   display: grid;
   grid-template-columns: var(--scrolly-text-width) var(--scrolly-chart-width);
   gap: var(--scrolly-gap);
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 var(--space-lg);
+  padding: var(--space-2xl) var(--space-lg);
+  min-height: 100vh;
   position: relative;
+  align-items: center;
 }
 
-/* Coluna esquerda: seções de texto que rolam normalmente */
-.scroll-text {
-  padding-top: var(--space-3xl);
-  padding-bottom: 100vh; /* Espaço extra no final para o último step ficar visível */
+/* Coluna esquerda: texto que alterna e botões */
+.slides-left-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
 }
 
-/* Coluna direita: gráfico travado na viewport enquanto o texto rola */
+.slides-text {
+  display: grid;
+  align-items: center;
+}
+
+/* Coluna direita: gráfico travado */
 .sticky-graphic {
-  position: sticky;
-  top: 0;
-  height: 100vh;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -240,18 +247,56 @@ code, pre {
    ---------------------------------------------------------- */
 
 .step {
-  min-height: 80vh;
+  grid-area: 1 / 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: var(--space-2xl) var(--space-lg);
-  opacity: 0.2;
-  transition: opacity var(--duration-slow) var(--ease-out);
+  padding: var(--space-lg) 0;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity var(--duration-slow) var(--ease-out),
+              transform var(--duration-slow) var(--ease-out);
+  transform: translateY(20px);
 }
 
-/* Step ativo — revelado pelo IntersectionObserver / ScrollTrigger */
+/* Step ativo */
 .step.is-active {
   opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Navegação de passos */
+.step-navigation {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-xl);
+}
+
+.nav-btn {
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-primary);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-semibold);
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+  border: 1px solid hsla(220, 20%, 30%, 0.3);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.nav-btn:hover:not(:disabled) {
+  background: var(--bg-glass);
+  border-color: var(--accent-secondary);
+  color: var(--accent-secondary);
+}
+
+.nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* Número do passo — badge decorativo */
@@ -299,6 +344,48 @@ code, pre {
 
 .step__body + .step__body {
   margin-top: var(--space-sm);
+}
+
+/* Tabelas de Dados */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  margin: var(--space-md) 0;
+  border-radius: var(--radius-md);
+  border: 1px solid hsla(220, 20%, 30%, 0.3);
+  background: var(--bg-secondary);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  text-align: left;
+}
+
+.data-table th,
+.data-table td {
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid hsla(220, 20%, 30%, 0.2);
+}
+
+.data-table th {
+  color: var(--text-primary);
+  font-weight: var(--fw-semibold);
+  font-family: var(--font-primary);
+  background: var(--bg-tertiary);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tbody tr:hover {
+  background: var(--bg-tertiary);
 }
 
 /* Botão de ação dentro dos steps (ex: "Padronizar Dados") */
@@ -491,29 +578,25 @@ code, pre {
     --fs-xl:  1.5rem;
   }
 
-  .scrolly-container {
+  .slides-container {
     grid-template-columns: 1fr;
-    padding: 0 var(--space-sm);
+    padding: var(--space-lg) var(--space-sm);
   }
 
-  /* Em mobile, o gráfico fica sticky no topo ocupando 40% da tela */
+  /* Em mobile, o gráfico fica no topo ocupando 40% da tela */
   .sticky-graphic {
-    position: sticky;
-    top: 0;
+    position: relative;
     height: 40vh;
     z-index: 10;
     padding: var(--space-xs);
-    background: var(--bg-primary); /* Para que o texto ao rolar não apareça sob o vidro */
-    border-bottom: 1px solid hsla(220, 20%, 30%, 0.3);
+    background: var(--bg-primary);
   }
 
-  .scroll-text {
+  .slides-text {
     padding-top: var(--space-lg);
-    padding-bottom: var(--space-2xl);
   }
 
   .step {
-    min-height: 50vh;
-    padding: var(--space-lg) var(--space-sm);
+    padding: var(--space-md) 0;
   }
 }

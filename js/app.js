@@ -103,9 +103,9 @@ function setupNavigation() {
   const btnStart = document.getElementById('btn-start');
   if (btnStart) {
     btnStart.addEventListener('click', () => {
-      const firstStep = document.getElementById('step-1');
-      if (firstStep) {
-        firstStep.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const mainContainer = document.getElementById('scrolly');
+      if (mainContainer) {
+        mainContainer.scrollIntoView({ behavior: 'smooth' });
       }
     });
   }
