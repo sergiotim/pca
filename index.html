@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <!-- ====================================================
+       Meta Tags e SEO
+       ==================================================== -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Business Case interativo: aprenda PCA (Análise de Componentes Principais) na prática, com visualizações 3D e scrollytelling.">
+  <meta name="author" content="Equipe PCA — Engenharia de Dados">
+  <title>Business Case: Entendendo o PCA na Prática</title>
+
+  <!-- ====================================================
+       Google Fonts — Inter (corpo) + JetBrains Mono (código)
+       ==================================================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- ====================================================
+       CSS — Folha de estilos global
+       ==================================================== -->
+  <link rel="stylesheet" href="./css/style.css">
+
+  <!-- ====================================================
+       CDNs — Bibliotecas de visualização e animação
+       Versões fixas para garantir estabilidade.
+       ==================================================== -->
+
+  <!-- Plotly.js: Motor principal para gráficos matemáticos (Dispersão, 3D, Heatmap) -->
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+
+  <!-- D3.js: Manipulação de DOM para animações SVG complexas -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <!-- GSAP + ScrollTrigger: Motor de animações de UI e scroll -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+
+<body>
+
+  <!-- ====================================================
+       BARRA DE PROGRESSO
+       Indica visualmente o progresso na jornada (controlada via JS).
+       ==================================================== -->
+  <div class="progress-bar" id="progress-bar" style="width: 0%;"></div>
+
+
+  <!-- ====================================================
+       HERO / LANDING — Seção de boas-vindas
+       Apresenta o desafio do e-commerce e convida o usuário
+       a iniciar a jornada de aprendizado sobre PCA.
+       ==================================================== -->
+  <section class="hero" id="hero">
+    <h1 class="hero__title">Business Case: Entendendo o PCA na Prática</h1>
+    <p class="hero__subtitle">
+      Você é um Analista de Dados num E-commerce. Sua missão: segmentar clientes
+      a partir de 5 variáveis. Mas… como visualizar 5 dimensões ao mesmo tempo?
+    </p>
+    <button class="hero__cta" id="btn-start" type="button">
+      Iniciar Jornada ↓
+    </button>
+  </section>
+
+
+  <!-- ====================================================
+       SCROLLYTELLING — Corpo principal da experiência
+       Layout Side-by-Side:
+         • <article> (esquerda): seções de texto que rolam
+         • <figure> (direita): gráfico travado em sticky
+       ==================================================== -->
+  <main class="scrolly-container" id="scrolly">
+
+    <!-- ── COLUNA ESQUERDA: Texto narrativo ── -->
+    <article class="scroll-text">
+
+      <!-- PASSO 1: O Caos Dimensional -->
+      <section class="step" data-step="1" id="step-1">
+        <span class="step__badge">Passo 1</span>
+        <h2 class="step__title">O Caos Dimensional</h2>
+        <p class="step__subtitle">
+          "Temos 5 coisas sobre cada cliente. Você consegue imaginar um objeto em 5D?"
+        </p>
+        <p class="step__body">
+          Aqui está a tabela dos nossos clientes. Cada linha é uma pessoa; cada coluna é uma 
+          característica: <strong>Idade</strong>, <strong>Tempo no Site</strong>, 
+          <strong>Ticket Médio</strong>, <strong>Frequência de Compra</strong> e 
+          <strong>Interações com Suporte</strong>.
+        </p>
+        <p class="step__body">
+          Nosso objetivo é encontrar padrões — mas nossos olhos só enxergam em 3D (no máximo). 
+          Precisamos reduzir essas 5 dimensões para 2, como tirar uma "sombra" de um objeto 
+          multidimensional.
+        </p>
+      </section>
+
+      <!-- PASSO 2: Nivelando o Jogo (Padronização) -->
+      <section class="step" data-step="2" id="step-2">
+        <span class="step__badge">Passo 2</span>
+        <h2 class="step__title">Nivelando o Jogo</h2>
+        <p class="step__subtitle">
+          "Não podemos comparar idade (25 anos) com dinheiro (R$ 5.000). 
+          O dinheiro vai gritar mais alto."
+        </p>
+        <p class="step__body">
+          Antes de qualquer análise, precisamos colocar todas as variáveis na mesma régua. 
+          Esse processo se chama <strong>Padronização (Z-score)</strong>: transforma cada valor 
+          de modo que a média fique em 0 e o desvio-padrão em 1.
+        </p>
+        <p class="step__body">
+          Observe ao lado como o dinheiro "esmaga" a idade no gráfico — e depois 
+          clique no botão abaixo para nivelar o campo de jogo.
+        </p>
+        <button class="step__action" id="btn-standardize" type="button">
+          ⚖️ Padronizar Dados (Z-Score)
+        </button>
+      </section>
+
+      <!-- PASSO 3: Quem anda com quem? (Covariância) -->
+      <section class="step" data-step="3" id="step-3">
+        <span class="step__badge">Passo 3</span>
+        <h2 class="step__title">Quem Anda com Quem?</h2>
+        <p class="step__subtitle">
+          "Se o tempo no site sobe, o ticket médio também sobe? 
+          Isso é covariância: descobrir quais fofocas se repetem."
+        </p>
+        <p class="step__body">
+          Agora vamos investigar como as variáveis se relacionam entre si. 
+          A <strong>Matriz de Covariância</strong> é como um "radar de tendências" — 
+          ela nos diz quais pares de variáveis andam juntos e quais andam em direções opostas.
+        </p>
+        <p class="step__body">
+          Passe o mouse sobre os cruzamentos no mapa ao lado. 
+          <span style="color: var(--accent-success);">Verde</span> = andam juntos. 
+          <span style="color: var(--accent-danger);">Vermelho</span> = direções opostas.
+        </p>
+      </section>
+
+      <!-- PASSO 4: As Novas Avenidas (Autovetores) -->
+      <section class="step" data-step="4" id="step-4">
+        <span class="step__badge">Passo 4</span>
+        <h2 class="step__title">As Novas Avenidas</h2>
+        <p class="step__subtitle">
+          "Imagine tirar uma foto de uma bicicleta. De frente, ela parece um risco. 
+          De lado, você vê a bicicleta inteira."
+        </p>
+        <p class="step__body">
+          <strong>Autovetores</strong> são os "melhores ângulos de foto" — as direções onde 
+          os dados estão mais espalhados. <strong>Autovalores</strong> nos dizem quanto de 
+          informação cada ângulo captura.
+        </p>
+        <p class="step__body">
+          Clique em <em>"Encontrar o melhor ângulo"</em> e observe os eixos girarem até achar 
+          a posição onde os pontos ficam mais espalhados. Esse eixo mágico é o 
+          <strong>Componente Principal 1 (PC1)</strong>.
+        </p>
+        <button class="step__action" id="btn-eigen" type="button">
+          📐 Encontrar o melhor ângulo
+        </button>
+      </section>
+
+      <!-- PASSO 5: A Mágica — Projeção Final -->
+      <section class="step" data-step="5" id="step-5">
+        <span class="step__badge">Passo 5</span>
+        <h2 class="step__title">A Mágica da Projeção</h2>
+        <p class="step__subtitle">
+          "Mágica! Transformamos 5 variáveis em 2 super-variáveis invisíveis."
+        </p>
+        <p class="step__body">
+          Pronto! Usando os dois melhores ângulos (PC1 e PC2), "esmagamos" nossos dados 
+          de 5 dimensões em apenas 2. O resultado? Um gráfico de dispersão 2D onde os 
+          <strong>clusters</strong> — os perfis de clientes — aparecem naturalmente!
+        </p>
+        <p class="step__body">
+          Veja como os clientes se agruparam: 
+          <strong>VIPs</strong>, <strong>Casuais</strong>, <strong>De Risco</strong>… 
+          Tudo isso a partir de uma redução de dimensionalidade. Esse é o poder do PCA.
+        </p>
+      </section>
+
+    </article>
+
+    <!-- ── COLUNA DIREITA: Gráfico fixo (sticky) ── -->
+    <figure class="sticky-graphic" id="sticky-graphic">
+      <!-- Container onde o Plotly renderiza os gráficos de cada passo -->
+      <div id="chart-container" aria-label="Visualização interativa do PCA"></div>
+    </figure>
+
+  </main>
+
+
+  <!-- ====================================================
+       FOOTER / ENCERRAMENTO
+       ==================================================== -->
+  <footer class="hero" id="conclusion" style="min-height: 50vh;">
+    <h2 class="hero__title" style="font-size: var(--fs-2xl);">
+      🎉 Jornada Concluída!
+    </h2>
+    <p class="hero__subtitle">
+      Agora você sabe como o PCA transforma 5 dimensões em 2, revelando padrões 
+      invisíveis nos dados. Use esse conhecimento para segmentar, analisar e decidir.
+    </p>
+    <button class="hero__cta" id="btn-restart" type="button">
+      Reiniciar Jornada ↑
+    </button>
+  </footer>
+
+
+  <!-- ====================================================
+       JavaScript — Módulo principal (ES6 Modules)
+       O atributo type="module" garante:
+         1. Execução após o parse do HTML (defer implícito)
+         2. Suporte a import/export nativo
+         3. Escopo isolado (sem poluir window)
+       ==================================================== -->
+  <script type="module" src="./js/app.js"></script>
+
+</body>
+</html>
